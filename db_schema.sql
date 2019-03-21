@@ -1,3 +1,16 @@
+CREATE TABLE application_settings (
+	id serial NOT NULL PRIMARY KEY,
+	key varchar NOT NULL,
+	value varchar NOT NULL
+);
+
+CREATE TABLE user_session (
+	id serial NOT NULL PRIMARY KEY,
+	user_id int NOT NULL REFERENCES application_user(id),
+	token varchar NOT NULL,
+	add_date timestamp NOT NULL
+);
+
 -- admin, standard user etc.
 CREATE TABLE user_type (
 	id serial NOT NULL PRIMARY KEY,
@@ -76,4 +89,10 @@ CREATE TABLE opinion (
 	add_date timestamp
 );
 
+
+INSERT INTO user_type VALUES(default, 'user', true, now());
+INSERT INTO user_type VALUES(default, 'moderator', true, now());
+
+INSERT INTO place_type VALUES(default, 'School', true, now());
+INSERT INTO place_type VALUES(default, 'Hospital', true, now());
 

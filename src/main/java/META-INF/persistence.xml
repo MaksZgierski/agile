@@ -8,6 +8,7 @@
 		<class>com.unitech.agile.entity.Place</class>
 		<class>com.unitech.agile.entity.PlaceConvenience</class>
 		<class>com.unitech.agile.entity.PlaceType</class>
+		<class>com.unitech.agile.entity.UserSession</class>
 		<class>com.unitech.agile.entity.UserType</class>
 	</persistence-unit>
 </persistence>

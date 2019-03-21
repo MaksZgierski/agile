@@ -1,9 +1,19 @@
 package com.unitech.agile.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -46,6 +56,10 @@ public class ApplicationUser implements Serializable {
 	//bi-directional many-to-one association to Place
 	@OneToMany(mappedBy="applicationUser")
 	private List<Place> places;
+
+	//bi-directional many-to-one association to UserSession
+	@OneToMany(mappedBy="applicationUser")
+	private List<UserSession> userSessions;
 
 	public ApplicationUser() {
 	}
@@ -156,6 +170,28 @@ public class ApplicationUser implements Serializable {
 		place.setApplicationUser(null);
 
 		return place;
+	}
+
+	public List<UserSession> getUserSessions() {
+		return this.userSessions;
+	}
+
+	public void setUserSessions(List<UserSession> userSessions) {
+		this.userSessions = userSessions;
+	}
+
+	public UserSession addUserSession(UserSession userSession) {
+		getUserSessions().add(userSession);
+		userSession.setApplicationUser(this);
+
+		return userSession;
+	}
+
+	public UserSession removeUserSession(UserSession userSession) {
+		getUserSessions().remove(userSession);
+		userSession.setApplicationUser(null);
+
+		return userSession;
 	}
 
 }
