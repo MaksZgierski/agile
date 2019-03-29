@@ -14,5 +14,8 @@ import com.unitech.agile.entity.ApplicationUser;
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Integer> {
 
 	@Query("SELECT u FROM ApplicationUser u WHERE u.login = :login AND u.password = :password")
-    ApplicationUser findByLogin(@Param("login") String login, @Param("password") String password);
+    ApplicationUser findByLoginAndPassword(@Param("login") String login, @Param("password") String password);
+	
+	@Query("SELECT u FROM ApplicationUser u WHERE u.login = :login")
+    ApplicationUser findByLogin(@Param("login") String login);
 }

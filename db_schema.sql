@@ -4,13 +4,6 @@ CREATE TABLE application_settings (
 	value varchar NOT NULL
 );
 
-CREATE TABLE user_session (
-	id serial NOT NULL PRIMARY KEY,
-	user_id int NOT NULL REFERENCES application_user(id),
-	token varchar NOT NULL,
-	add_date timestamp NOT NULL
-);
-
 -- admin, standard user etc.
 CREATE TABLE user_type (
 	id serial NOT NULL PRIMARY KEY,
@@ -29,6 +22,13 @@ CREATE TABLE application_user (
 	active boolean NOT NULL,
 	add_date timestamp NOT NULL,
 	last_modified timestamp
+);
+
+CREATE TABLE user_session (
+	id serial NOT NULL PRIMARY KEY,
+	user_id int NOT NULL REFERENCES application_user(id),
+	token varchar NOT NULL,
+	add_date timestamp NOT NULL
 );
 
 -- hospital, school etc.
@@ -96,3 +96,16 @@ INSERT INTO user_type VALUES(default, 'moderator', true, now());
 INSERT INTO place_type VALUES(default, 'School', true, now());
 INSERT INTO place_type VALUES(default, 'Hospital', true, now());
 
+INSERT INTO convenience VALUES(default, 'Parking lot', true, now());
+INSERT INTO convenience VALUES(default, 'Bike parking lot', true, now());
+INSERT INTO convenience VALUES(default, 'Disabled conveniences', true, now());
+INSERT INTO convenience VALUES(default, 'Child care', true, now());
+
+INSERT INTO application_user VALUES(default, 'test@test', '098F6BCD4621D373CADE4E832627B4F6', 'test', 2, true, now());
+
+INSERT INTO place VALUES(default, 'Place1', 1, 1, 51.723887, 19.462877, 'ul. Piotrkowska 100', 'Description of Place1', true, now());
+INSERT INTO place VALUES(default, 'Place2', 2, 1, 51.724304, 19.454806, 'ul. Sienkiewicza 100', 'Description of Place2', true, now());
+
+INSERT INTO place_convenience VALUES(default, 1, 1, true, now());
+INSERT INTO place_convenience VALUES(default, 2, 1, true, now());
+INSERT INTO place_convenience VALUES(default, 2, 2, true, now());
