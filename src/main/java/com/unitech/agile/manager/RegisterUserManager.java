@@ -24,19 +24,25 @@ public class RegisterUserManager {
 	
 	@SuppressWarnings("rawtypes")
 	public BaseObjectResponse registerUser(RegisterUserRequest request) {
-		final UserType userType = userTypeRepository.findById(1);
-		final ApplicationUser user = new ApplicationUser();
-		user.setLogin(request.getLogin());
-		user.setPassword(CommonTools.generateMD5(request.getPassword()));
-		user.setName(request.getName());
-		user.setActive(true);
-		user.setUserType(userType);
-		user.setAddDate(new Timestamp(System.currentTimeMillis()));
-		applicationUserRepository.save(user);
-		
 		final BaseObjectResponse response = new BaseObjectResponse();
-		response.setCode(1);
-		response.setMessage("OK");
+		final UserType userType = userTypeRepository.findById(1);
+		final ApplicationUser check = applicationUserRepository.findByLogin(request.getLogin());
+		if(check != null) {
+			response.setCode(2);
+			response.setMessage("This login is already used");
+		} else {
+			final ApplicationUser user = new ApplicationUser();
+			user.setLogin(request.getLogin());
+			user.setPassword(CommonTools.generateMD5(request.getPassword()));
+			user.setName(request.getName());
+			user.setActive(true);
+			user.setUserType(userType);
+			user.setAddDate(new Timestamp(System.currentTimeMillis()));
+			applicationUserRepository.save(user);
+			
+			response.setCode(1);
+			response.setMessage("OK");
+		}
 		return response;
 	}
 }

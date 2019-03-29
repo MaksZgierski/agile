@@ -9,15 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.unitech.agile.entity.Convenience;
+import com.unitech.agile.entity.PlaceConvenience;
 
 @Repository
 @Transactional
-public interface ConvenienceRepository extends JpaRepository<Convenience, Integer> {
+public interface PlaceConvenienceRepository extends JpaRepository<PlaceConvenience, Integer> {
 
-	@Query("SELECT c FROM Convenience c WHERE c.active = TRUE")
-	List<Convenience> findAllValid();
-	
-	@Query("SELECT c FROM Convenience c WHERE c.id = :id")
-	Convenience findById(@Param("id") int id);
+	@Query("SELECT pc FROM PlaceConvenience pc WHERE pc.active = TRUE AND pc.place.id = :placeId")
+	List<PlaceConvenience> findByPlaceId(@Param("placeId") int placeId);
 }

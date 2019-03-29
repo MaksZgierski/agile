@@ -24,7 +24,7 @@ public class LoginUserManager {
 	UserSessionRepository userSessionRepository;
 	
 	public BaseObjectResponse<LoginUserResponse> login(LoginUserRequest request) {
-		final ApplicationUser user = applicationUserRepository.findByLogin(request.getLogin(), CommonTools.generateMD5(request.getPassword()));
+		final ApplicationUser user = applicationUserRepository.findByLoginAndPassword(request.getLogin(), CommonTools.generateMD5(request.getPassword()));
 		final BaseObjectResponse<LoginUserResponse> response = new BaseObjectResponse<LoginUserResponse>();
 		if(user != null) {
 			final UserSession session = new UserSession();
