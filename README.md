@@ -48,3 +48,27 @@ curl -X GET \
   -H 'postman-token: 8100b67f-7c73-ad84-eb85-03cc669e1905' \
   -H 'token: hM24RxQGRs3ftKSts50FYnWTdb13im1rviIctt3lxfBdt1BVYU'
 
+Pobranie wszystkich miejsc:
+curl -X GET https://maks-zgierski.pl:6443/agile/places \
+  -H 'cache-control: no-cache' \
+  -H 'charset: utf-8' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 34e8d2cf-8fb9-473b-fdce-87288c0aa3c6' \
+  -H 'token: aTrmXAw0AR2z0QC9BECJJ7p1xKOvF7prcV2YCSu5Ha1zdMYCEG' \
+  -d '{
+	"login":"test",
+	"password":"password"
+}'
+
+Pobranie szczegółów miejsca:
+curl -X GET https://maks-zgierski.pl:6443/agile/place_details/1 \
+  -H 'cache-control: no-cache' \
+  -H 'charset: utf-8' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 2a8b9e30-ae36-0e31-d7ec-cff817fb7e27' \
+  -H 'token: aTrmXAw0AR2z0QC9BECJJ7p1xKOvF7prcV2YCSu5Ha1zdMYCEG' \
+  -d '{
+	"login":"test",
+	"password":"password"
+}'
+https://maks-zgierski.pl:6443/agile/place_details/{place_id}
