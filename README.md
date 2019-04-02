@@ -71,4 +71,6 @@ curl -X GET https://maks-zgierski.pl:6443/agile/place_details/1 \
 	"login":"test",
 	"password":"password"
 }'
+
 https://maks-zgierski.pl:6443/agile/place_details/{place_id}
+
