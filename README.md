@@ -74,3 +74,44 @@ curl -X GET https://maks-zgierski.pl:6443/agile/place_details/1 \
 
 https://maks-zgierski.pl:6443/agile/place_details/{place_id}
 
+
+Dodanie nowego miejsca:
+curl -X POST https://maks-zgierski.pl:6443/agile/places \
+  -H 'cache-control: no-cache' \
+  -H 'charset: utf-8' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 05f47553-2516-26a4-057e-a139d83b9e62' \
+  -H 'token: h3kmnbyUgtdw8dRCnLGPK320KQybwBz3UiwiULikW1pZjQk90x' \
+  -d '{
+	"name":"New place",
+	"placeType":1,
+	"lat": 50.123,
+	"lng": 50.456,
+	"address":"address",
+	"description":"desc",
+	"conveniences":[1]
+}'
+
+Usunięcie miejsca (pod warunkiem, że jesteśmy właścicielem, czyli miejsce zostało dodane przez nas):
+curl -X DELETE https://maks-zgierski.pl:6443/agile/places/3 \
+  -H 'cache-control: no-cache' \
+  -H 'charset: utf-8' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: f8cfa3c7-51cc-b7e3-9229-23ab31fd2117' \
+  -H 'token: h3kmnbyUgtdw8dRCnLGPK320KQybwBz3UiwiULikW1pZjQk90x'
+  
+https://maks-zgierski.pl:6443/agile/places/{place_id}
+
+
+Dodanie komentarza do miejsca:
+curl -X POST https://maks-zgierski.pl:6443/agile/opinion \
+  -H 'cache-control: no-cache' \
+  -H 'charset: utf-8' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: a77e65c4-f676-7044-2dbb-802d20b247d6' \
+  -H 'token: h3kmnbyUgtdw8dRCnLGPK320KQybwBz3UiwiULikW1pZjQk90x' \
+  -d '{
+	"placeId":1,
+	"rating":5,
+	"comment":"comment"
+}'
