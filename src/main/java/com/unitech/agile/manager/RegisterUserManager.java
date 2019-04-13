@@ -2,6 +2,7 @@ package com.unitech.agile.manager;
 
 import java.sql.Timestamp;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,11 @@ public class RegisterUserManager {
 	@SuppressWarnings("rawtypes")
 	public BaseObjectResponse registerUser(RegisterUserRequest request) {
 		final BaseObjectResponse response = new BaseObjectResponse();
+		if(StringUtils.isBlank(request.getLogin()) || StringUtils.isBlank(request.getPassword()) || StringUtils.isBlank(request.getName())) {
+			response.setCode(2);
+			response.setMessage("Some of the required fields are empty");
+			return response;
+		}
 		final UserType userType = userTypeRepository.findById(1);
 		final ApplicationUser check = applicationUserRepository.findByLogin(request.getLogin());
 		if(check != null) {

@@ -18,4 +18,7 @@ public interface ApplicationUserRepository extends JpaRepository<ApplicationUser
 	
 	@Query("SELECT u FROM ApplicationUser u WHERE u.login = :login")
     ApplicationUser findByLogin(@Param("login") String login);
+
+	@Query("SELECT u FROM ApplicationUser u WHERE u.id = :id")
+    ApplicationUser findById(@Param("id") int id);
 }

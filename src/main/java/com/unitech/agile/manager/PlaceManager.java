@@ -1,8 +1,10 @@
 package com.unitech.agile.manager;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -11,21 +13,26 @@ import com.unitech.agile.dto.ConvenienceDTO;
 import com.unitech.agile.dto.OpinionDTO;
 import com.unitech.agile.dto.PlaceDTO;
 import com.unitech.agile.dto.PlaceTypeDTO;
+import com.unitech.agile.entity.ApplicationUser;
 import com.unitech.agile.entity.Convenience;
 import com.unitech.agile.entity.Opinion;
 import com.unitech.agile.entity.Place;
 import com.unitech.agile.entity.PlaceConvenience;
 import com.unitech.agile.entity.PlaceType;
 import com.unitech.agile.entity.UserSession;
+import com.unitech.agile.model.request.AddPlaceRequest;
+import com.unitech.agile.model.response.AddPlaceResponse;
 import com.unitech.agile.model.response.BaseArrayResponse;
 import com.unitech.agile.model.response.BaseObjectResponse;
 import com.unitech.agile.model.response.PlaceDetailsResponse;
+import com.unitech.agile.repository.ApplicationUserRepository;
 import com.unitech.agile.repository.ConvenienceRepository;
 import com.unitech.agile.repository.OpinionRepository;
 import com.unitech.agile.repository.PlaceConvenienceRepository;
 import com.unitech.agile.repository.PlaceRepository;
 import com.unitech.agile.repository.PlaceTypeRepository;
 import com.unitech.agile.repository.UserSessionRepository;
+import com.unitech.agile.tools.CommonTools;
 
 @Service
 public class PlaceManager {
@@ -52,14 +59,17 @@ public class PlaceManager {
 	@Autowired
 	OpinionRepository opinionRepository;
 	
+	@Autowired
+	ApplicationUserRepository applicationUserRepository;
+	
 	public BaseArrayResponse<PlaceDTO> getPlaces(String token) {
 		final BaseArrayResponse<PlaceDTO> response = new BaseArrayResponse<PlaceDTO>();
 		final UserSession session = userSessionRepository.findByToken(token, new Sort(Sort.Direction.DESC, "addDate"));
-//		if(!CommonTools.isSessionValid(session)) {
-//			response.setCode(2);
-//			response.setMessage("Session is not valid");
-//			return response;
-//		}
+		if(!CommonTools.isSessionValid(session)) {
+			response.setCode(2);
+			response.setMessage("Session is not valid");
+			return response;
+		}
 		
 		final List<Place> places = placeRepository.findAllValid();
 		final List<PlaceDTO> dto = new ArrayList<>();
@@ -85,11 +95,11 @@ public class PlaceManager {
 	public BaseObjectResponse<PlaceDetailsResponse> getPlaceDetails(String token, int id) {
 		final BaseObjectResponse<PlaceDetailsResponse> response = new BaseObjectResponse<PlaceDetailsResponse>();
 		final UserSession session = userSessionRepository.findByToken(token, new Sort(Sort.Direction.DESC, "addDate"));
-//		if(!CommonTools.isSessionValid(session)) {
-//			response.setCode(2);
-//			response.setMessage("Session is not valid");
-//			return response;
-//		}
+		if(!CommonTools.isSessionValid(session)) {
+			response.setCode(2);
+			response.setMessage("Session is not valid");
+			return response;
+		}
 		
 		final Place place = placeRepository.findById(id);
 		if(place == null) {
@@ -116,6 +126,86 @@ public class PlaceManager {
 					place.getLat(), place.getLon(), place.getDescription(), place.getAddress(), conveniences, placeTypeDTO,
 					opinionsDTO, calculateRating(opinions), opinionsDTO.size());
 			response.setResponse(placeDetailsResponse);
+			response.setCode(1);
+			response.setMessage("OK");
+		}
+		return response;
+	}
+	
+	public BaseObjectResponse<AddPlaceResponse> addPlace(String token, AddPlaceRequest request) {
+		final BaseObjectResponse<AddPlaceResponse> response = new BaseObjectResponse<AddPlaceResponse>();
+		final UserSession session = userSessionRepository.findByToken(token, new Sort(Sort.Direction.DESC, "addDate"));
+		if(!CommonTools.isSessionValid(session)) {
+			response.setCode(2);
+			response.setMessage("Session is not valid");
+			return response;
+		}
+		
+		if(StringUtils.isBlank(request.getAddress()) || StringUtils.isBlank(request.getName()) ||
+				request.getLat() == null || request.getLng() == null || request.getPlaceType() == null) {
+			response.setCode(2);
+			response.setMessage("Some of the required fields are empty");
+			return response;
+		}
+		
+		final ApplicationUser user = applicationUserRepository.findById(session.getApplicationUser().getId());
+		final PlaceType placeType = placeTypeRepository.findById(request.getPlaceType());
+		final Place place = new Place();
+		place.setActive(true);
+		place.setAddDate(new Timestamp(System.currentTimeMillis()));
+		place.setAddress(request.getAddress());
+		place.setDescription(request.getDescription());
+		place.setName(request.getName());
+		place.setLat(request.getLat());
+		place.setLon(request.getLng());
+		place.setApplicationUser(user);
+		place.setPlaceType(placeType);
+		placeRepository.save(place);
+		
+		final List<Integer> conveniences = request.getConveniences();
+		if(conveniences != null && !conveniences.isEmpty()) {
+			for(Integer convenienceId : conveniences) {
+				final Convenience convenience = convenienceRepository.findById(convenienceId);
+				if(convenience == null) {
+					response.setCode(2);
+					response.setMessage("Convenience id is not valid");
+					return response;
+				}
+				final PlaceConvenience pc = new PlaceConvenience();
+				pc.setActive(true);
+				pc.setConvenience(convenience);
+				pc.setPlace(place);
+				pc.setAddDate(new Timestamp(System.currentTimeMillis()));
+				placeConvenienceRepository.save(pc);
+			}
+		}
+		response.setResponse(new AddPlaceResponse(place.getId()));
+		response.setCode(1);
+		response.setMessage("OK");
+		return response;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public BaseObjectResponse deletePlace(String token, int id) {
+		final BaseObjectResponse response = new BaseObjectResponse();
+		final UserSession session = userSessionRepository.findByToken(token, new Sort(Sort.Direction.DESC, "addDate"));
+		if(!CommonTools.isSessionValid(session)) {
+			response.setCode(2);
+			response.setMessage("Session is not valid");
+			return response;
+		}
+		
+		final Place place = placeRepository.findById(id);
+		final ApplicationUser user = applicationUserRepository.findById(session.getApplicationUser().getId());
+		if(place == null) {
+			response.setCode(2);
+			response.setMessage("Invalid id");
+		} else if(place.getApplicationUser().getId() != user.getId()) {
+			response.setCode(2);
+			response.setMessage("You are not the owner of this place");
+		} else {
+			place.setActive(false);
+			placeRepository.save(place);
 			response.setCode(1);
 			response.setMessage("OK");
 		}
