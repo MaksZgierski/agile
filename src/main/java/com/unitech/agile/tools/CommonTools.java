@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Date;
 
 import com.unitech.agile.entity.UserSession;
 
@@ -56,6 +55,9 @@ public class CommonTools {
 	}
 	
 	public static boolean isSessionValid(UserSession session) {
+		if(session == null) {
+			return false;
+		}
 		final long milis = session.getAddDate().getTime();
 		return Math.abs(milis - System.currentTimeMillis()) <= MILIS_IN_60_MINS;
 	}

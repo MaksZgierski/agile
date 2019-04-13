@@ -44,3 +44,4 @@ public class PlaceTypeManager {
 		return response;
 	}
 }
+// aTrmXAw0AR2z0QC9BECJJ7p1xKOvF7prcV2YCSu5Ha1zdMYCEG

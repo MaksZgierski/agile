@@ -2,6 +2,7 @@ package com.unitech.agile.manager;
 
 import java.sql.Timestamp;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,13 @@ public class LoginUserManager {
 	UserSessionRepository userSessionRepository;
 	
 	public BaseObjectResponse<LoginUserResponse> login(LoginUserRequest request) {
-		final ApplicationUser user = applicationUserRepository.findByLoginAndPassword(request.getLogin(), CommonTools.generateMD5(request.getPassword()));
 		final BaseObjectResponse<LoginUserResponse> response = new BaseObjectResponse<LoginUserResponse>();
+		if(StringUtils.isBlank(request.getLogin()) || StringUtils.isBlank(request.getPassword())) {
+			response.setCode(2);
+			response.setMessage("Some of the required fields are empty");
+			return response;
+		}
+		final ApplicationUser user = applicationUserRepository.findByLoginAndPassword(request.getLogin(), CommonTools.generateMD5(request.getPassword()));
 		if(user != null) {
 			final UserSession session = new UserSession();
 			session.setApplicationUser(user);
