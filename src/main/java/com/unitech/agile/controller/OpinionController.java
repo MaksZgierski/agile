@@ -1,5 +1,6 @@
 package com.unitech.agile.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,8 @@ public class OpinionController {
 	
 	@Autowired
 	OpinionManager opinionManager;
-	
+
+	@ApiOperation(value="Add opinion", tags="Agile")
 	@PostMapping(value = "/opinion")
 	public String addOpinion(@RequestHeader(value="token") String token, @RequestBody AddOpinionRequest request) {
 		return opinionManager.addOpinion(token, request).toString();

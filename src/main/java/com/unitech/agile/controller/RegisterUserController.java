@@ -1,5 +1,6 @@
 package com.unitech.agile.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +14,8 @@ public class RegisterUserController {
 
 	@Autowired
 	RegisterUserManager registerUserManager;
-	
+
+	@ApiOperation(value="Register User", tags="Agile")
 	@PostMapping(value = "/register_user")
 	public String registerUser(@RequestBody RegisterUserRequest request) {
 		return registerUserManager.registerUser(request).toString();
