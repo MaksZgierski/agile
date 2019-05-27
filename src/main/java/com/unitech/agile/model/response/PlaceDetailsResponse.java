@@ -35,6 +35,9 @@ public class PlaceDetailsResponse {
 
 	@SerializedName("opinions")
 	private List<OpinionDTO> opinions;
+	
+	@SerializedName("images")
+	private List<Integer> images;
 
 	@SerializedName("rating")
 	private float rating;
@@ -44,7 +47,7 @@ public class PlaceDetailsResponse {
 
 	public PlaceDetailsResponse(int id, String name, float latitude, float longitude, String description,
 			String address, List<ConvenienceDTO> conveniences, PlaceTypeDTO placeType, List<OpinionDTO> opinions,
-			float rating, int numberOfOpinions) {
+			float rating, int numberOfOpinions, List<Integer> images) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -57,6 +60,7 @@ public class PlaceDetailsResponse {
 		this.opinions = opinions;
 		this.rating = rating;
 		this.numberOfOpinions = numberOfOpinions;
+		this.images = images;
 	}
 
 	public int getId() {
