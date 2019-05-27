@@ -15,6 +15,7 @@ import com.unitech.agile.dto.PlaceDTO;
 import com.unitech.agile.dto.PlaceTypeDTO;
 import com.unitech.agile.entity.ApplicationUser;
 import com.unitech.agile.entity.Convenience;
+import com.unitech.agile.entity.Media;
 import com.unitech.agile.entity.Opinion;
 import com.unitech.agile.entity.Place;
 import com.unitech.agile.entity.PlaceConvenience;
@@ -27,6 +28,7 @@ import com.unitech.agile.model.response.BaseObjectResponse;
 import com.unitech.agile.model.response.PlaceDetailsResponse;
 import com.unitech.agile.repository.ApplicationUserRepository;
 import com.unitech.agile.repository.ConvenienceRepository;
+import com.unitech.agile.repository.MediaRepository;
 import com.unitech.agile.repository.OpinionRepository;
 import com.unitech.agile.repository.PlaceConvenienceRepository;
 import com.unitech.agile.repository.PlaceRepository;
@@ -61,6 +63,9 @@ public class PlaceManager {
 	
 	@Autowired
 	ApplicationUserRepository applicationUserRepository;
+	
+	@Autowired
+	MediaRepository mediaRepository;
 	
 	public BaseArrayResponse<PlaceDTO> getPlaces(String token) {
 		final BaseArrayResponse<PlaceDTO> response = new BaseArrayResponse<PlaceDTO>();
@@ -124,9 +129,15 @@ public class PlaceManager {
 						user.getLogin(), user.getId()));
 			}
 			
+			final List<Media> media = mediaRepository.findByPlaceId(place.getId());
+			final List<Integer> images = new ArrayList<>();
+			for(Media m : media) {
+				images.add(m.getId());
+			}
+			
 			final PlaceDetailsResponse placeDetailsResponse = new PlaceDetailsResponse(place.getId(), place.getName(),
 					place.getLat(), place.getLon(), place.getDescription(), place.getAddress(), conveniences, placeTypeDTO,
-					opinionsDTO, calculateRating(opinions), opinionsDTO.size());
+					opinionsDTO, calculateRating(opinions), opinionsDTO.size(), images);
 			response.setResponse(placeDetailsResponse);
 			response.setCode(1);
 			response.setMessage("OK");
