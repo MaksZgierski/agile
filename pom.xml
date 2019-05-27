@@ -61,6 +61,11 @@
 		    <artifactId>gson</artifactId>
 		</dependency>
 		
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
