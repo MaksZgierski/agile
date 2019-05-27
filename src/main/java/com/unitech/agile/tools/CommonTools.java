@@ -8,6 +8,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
+
 import com.unitech.agile.entity.UserSession;
 
 public class CommonTools {
@@ -60,5 +63,12 @@ public class CommonTools {
 		}
 		final long milis = session.getAddDate().getTime();
 		return Math.abs(milis - System.currentTimeMillis()) <= MILIS_IN_60_MINS;
+	}
+	
+	public static byte[] convertBase64ToBytes(String imageData) {
+		if(StringUtils.isBlank(imageData)) {
+			return null;
+		}
+		return Base64.decodeBase64(imageData);
 	}
 }
