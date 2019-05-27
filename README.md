@@ -115,3 +115,29 @@ curl -X POST https://maks-zgierski.pl:6443/agile/opinion \
 	"rating":5,
 	"comment":"comment"
 }'
+
+Dodawanie zdjęcia do POI:
+curl -X POST \
+  https://maks-zgierski.pl:6443/agile/images \
+  -H 'cache-control: no-cache' \
+  -H 'charset: utf-8' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: d699b3df-9f7d-7887-6e5e-7be3bcae4f34' \
+  -H 'token: N8384MbLWvYmLIesoStds67Qbou9v15Zydht0FAToBkT8nR9Ks' \
+  -d '{
+	"placeId":1,
+	"imageData":"iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4wUbFC4K4wF3/AAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAASSURBVBjTYzzOgA8wMYxKYwEA/YUA23G4lo0AAAAASUVORK5CYII="
+}'
+
+imageData to jest zakodowany obraz w formacie Base64. Na początku ciągu znaków nie wysyłamy "data:image/png;base64,". W tym przypadku imageData to są dane małego obrazu (10x10px), który można znaleźć w projekcie. Postarajcie się, żeby obrazy nie były zbyt duże plz :)
+
+Pobieranie zdjęcia dla POI:
+curl -X GET \
+  https://maks-zgierski.pl:6443/agile/images/1 \
+  -H 'cache-control: no-cache' \
+  -H 'charset: utf-8' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: e6904f6e-7c75-a6f0-7881-5b905da99a72' \
+  -H 'token: N8384MbLWvYmLIesoStds67Qbou9v15Zydht0FAToBkT8nR9Ks'
+  
+Wartość 1 oznacza od zdjęcia. W place_details pojawiło się pole "images" (lista int'ów), która opisuje id zdjęć dotyczących POI
