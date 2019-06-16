@@ -19,13 +19,17 @@ public class PlaceDTO {
 	@SerializedName("place_type")
 	private PlaceTypeDTO placeType;
 
-	public PlaceDTO(int id, String name, float latitude, float longitude, PlaceTypeDTO placeType) {
+	@SerializedName("rating")
+	private double rating;
+
+	public PlaceDTO(int id, String name, float latitude, float longitude, PlaceTypeDTO placeType, double rating) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.placeType = placeType;
+		this.rating = rating;
 	}
 
 	public int getId() {
@@ -46,6 +50,10 @@ public class PlaceDTO {
 
 	public PlaceTypeDTO getPlaceType() {
 		return placeType;
+	}
+
+	public double getRating() {
+		return rating;
 	}
 
 }
