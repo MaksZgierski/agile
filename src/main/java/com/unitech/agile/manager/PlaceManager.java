@@ -87,9 +87,10 @@ public class PlaceManager {
 			}
 			
 			final PlaceType placeType = placeTypeRepository.findById(p.getPlaceType().getId());
+			final List<Opinion> opinions = opinionRepository.findByPlaceId(p.getId());
 			final PlaceTypeDTO placeTypeDTO = new PlaceTypeDTO(placeType.getId(), placeType.getName());
 			
-			dto.add(new PlaceDTO(p.getId(), p.getName(), p.getLat(), p.getLon(), placeTypeDTO));
+			dto.add(new PlaceDTO(p.getId(), p.getName(), p.getLat(), p.getLon(), placeTypeDTO, calculateRating(opinions)));
 		}
 		response.setResponse(dto);
 		response.setCode(1);
