@@ -91,7 +91,7 @@ public class OpinionManager {
             response.setMessage("Invalid opinion id");
         }
         opinion.setRating(opinion.getRating() + request.getRating());
-        opinion.addCantrate(applicationUserRepository.findById(request.getUser_id()));
+        opinion.addCantrate(applicationUserRepository.findById(session.getApplicationUser().getId()));
         opinionRepository.save(opinion);
         response.setCode(1);
         response.setMessage("OK");

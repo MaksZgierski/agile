@@ -28,9 +28,9 @@ public class OpinionDTO {
 	private int rating;
 
 	@SerializedName("cantrate")
-	private List<Integer> cantrate;
+	private boolean cantrate;
 
-	public OpinionDTO(int id, String opinion, long date, String userName, String userLogin, int userId, int rating, List<Integer> cantrate) {
+	public OpinionDTO(int id, String opinion, long date, String userName, String userLogin, int userId, int rating, boolean cantrate) {
 		super();
 		this.id = id;
 		this.opinion = opinion;
@@ -68,5 +68,5 @@ public class OpinionDTO {
 
 	public int getRating() { return rating; }
 
-	public List<Integer> getCantrate() { return cantrate; }
+	public boolean getCantrate() { return cantrate; }
 }
