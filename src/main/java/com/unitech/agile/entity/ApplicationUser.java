@@ -4,16 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -56,6 +47,10 @@ public class ApplicationUser implements Serializable {
 	//bi-directional many-to-one association to Place
 	@OneToMany(mappedBy="applicationUser")
 	private List<Place> places;
+
+	//bi-directional many-to-one association to Place
+	@ManyToMany(mappedBy = "cantrate")
+	private List<Opinion> rated;
 
 	//bi-directional many-to-one association to UserSession
 	@OneToMany(mappedBy="applicationUser")

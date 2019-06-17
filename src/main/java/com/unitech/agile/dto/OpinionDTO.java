@@ -2,6 +2,8 @@ package com.unitech.agile.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class OpinionDTO {
 
 	@SerializedName("id")
@@ -22,7 +24,13 @@ public class OpinionDTO {
 	@SerializedName("user_id")
 	private int userId;
 
-	public OpinionDTO(int id, String opinion, long date, String userName, String userLogin, int userId) {
+	@SerializedName("rating")
+	private int rating;
+
+	@SerializedName("cantrate")
+	private List<Integer> cantrate;
+
+	public OpinionDTO(int id, String opinion, long date, String userName, String userLogin, int userId, int rating, List<Integer> cantrate) {
 		super();
 		this.id = id;
 		this.opinion = opinion;
@@ -30,6 +38,8 @@ public class OpinionDTO {
 		this.userName = userName;
 		this.userLogin = userLogin;
 		this.userId = userId;
+		this.rating = rating;
+		this.cantrate = cantrate;
 	}
 
 	public int getId() {
@@ -56,4 +66,7 @@ public class OpinionDTO {
 		return userId;
 	}
 
+	public int getRating() { return rating; }
+
+	public List<Integer> getCantrate() { return cantrate; }
 }

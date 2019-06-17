@@ -126,7 +126,7 @@ public class PlaceManager {
 			for(Opinion o : opinions) {
 				final ApplicationUser user = applicationUserRepository.findById(o.getApplicationUser().getId());
 				opinionsDTO.add(new OpinionDTO(o.getId(), o.getComment(), o.getAddDate().getTime(), user.getName(),
-						user.getLogin(), user.getId()));
+						user.getLogin(), user.getId(), o.getRating(), o.getCantrate()));
 			}
 			
 			final List<Media> media = mediaRepository.findByPlaceId(place.getId());

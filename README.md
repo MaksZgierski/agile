@@ -116,6 +116,19 @@ curl -X POST https://maks-zgierski.pl:6443/agile/opinion \
 	"comment":"comment"
 }'
 
+Ocenianie komentarza do miejsca:
+curl -X POST https://maks-zgierski.pl:6443/agile/opinion\rate \
+  -H 'cache-control: no-cache' \
+  -H 'charset: utf-8' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: a77e65c4-f676-7044-2dbb-802d20b247d6' \
+  -H 'token: h3kmnbyUgtdw8dRCnLGPK320KQybwBz3UiwiULikW1pZjQk90x' \
+  -d '{
+	"opinionId":1,
+	"rating": 1 or -1,
+	"user_id": 1
+}'
+
 Dodawanie zdjęcia do POI:
 curl -X POST \
   https://maks-zgierski.pl:6443/agile/images \
